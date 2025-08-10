@@ -17,10 +17,16 @@ export default class SchedulerService {
     this.jobs = new Map();
   }
 
-  start(): void {
+  async start(): Promise<void> {
     // No need for scheduling, Github Actions will run the job every day at 10AM UTC
     // So the script will run only once at startup
-    this.sendGlobalNewsFeed();
+    try {
+      await this.sendGlobalNewsFeed();
+      logger.info('Global news feed process completed successfully');
+    } catch (error) {
+      logger.error('Error in global news feed process:', error);
+      process.exit(1); // Exit with error code if the process fails
+    }
 
     // Exit the script after sending the message
     // Otherwise, the script will be cancelled after 6 hours by Github Actions
