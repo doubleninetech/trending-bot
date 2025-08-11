@@ -21,6 +21,7 @@ export default class SchedulerService {
     // No need for scheduling, Github Actions will run the job every day at 10AM UTC
     // So the script will run only once at startup
     try {
+      console.log('Sending global news feed');
       await this.sendGlobalNewsFeed();
       logger.info('Global news feed process completed successfully');
     } catch (error) {
